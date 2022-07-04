@@ -57,7 +57,7 @@ I will regularly schedule a time to study and implement research papers.
 This is the cost of freedom. Instead of wasting time preparing for entrance tests, and commuting, I choose to spend time carefully curating my course selection.
 
 ### CONFUSION ON SOUNDNESS OF CURRICULUM:
-When all you have is a hammer, everything looks like a Nail. Such is the paradoxical problem of creating the syllabus for a course you have yet to learn. That’s why the internet exists. Moreover, I will enlist the services of PhDs across multiple domains of ML and multiple colleges to curate and refine my curriculum. These are fees I would gladly pay. 
+When all you have is a hammer, everything looks like a nail. Such is the paradoxical problem of creating the syllabus for a course you have yet to learn. That’s why the internet exists. Moreover, I will enlist the services of PhDs across multiple domains of ML and multiple colleges to curate and refine my curriculum. These are fees I would gladly pay. 
 
 ### NO RECOGNITION:
 It is wise to display your journey to act as unequivocal evidence. This I will do. It is the cost of learning to learn, and not to  pass an exam, and subsequently forget what I’ve read the day after.
