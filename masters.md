@@ -48,20 +48,6 @@ The list of my **Why’s** includes the following.
   - Confusion wrt soundness of curriculum
   - No recognition
 
-### SELF-DIRECTED MASTER’S PROGRAM
-
-|  BENEFITS <br/> | PITFALLS<br/> |
-|-----|-----|
-|  SIMULATE REAL LIFE<br/> | NO SUPPORT & NETWORKING<br/> |
-|  INTENT TO LEARN NOT TO PASS AN EXAM OR GRADUATE <br/> | NO RESEARCH OPPORTUNITIES<br/> |
-|  INDUSTRY ORIENTED KNOWLEDGE<br/> | SPEND ADDITIONAL TIME CREATING THE CURRICULUM.<br/> |
-|  FLEXIBLE SCHEDULE<br/> | CONFUSION ON SOUNDNESS OF CURRICULUM.<br/> |
-|  PAY A TENTH OF WHAT YOU WOULD HAVE FOR MORE VALUE<br/> | NO RECOGNITION<br/> |
-|  SELF-RELIANCE<br/> |  |
-|  NO COMMUTING<br/> |  |
-|  IS SUSTAINABLE AFTER PROGRAM<br/> |  |
-
-
 ## Alleviation of Self-Directed Master’s Pitfalls:
 ### SUPPORT AND NETWORKING:
 I will have bi-weekly meetings with established PhDs / ML Engineers to discuss my problems.
