@@ -1,9 +1,7 @@
 ---
 layout: page
-title: About
-permalink: /about/
+title: Contact Me
+permalink: /contact/
 ---
-
-### Contact me
 
 [viswalahiriatgmaildotcom]
