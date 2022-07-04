@@ -1,4 +1,4 @@
-<h1 align="center">Self-Directed Masters Program</h1>
+<h1 align="center">Self-Directed Master's Program</h1>
 
 # Motivation
 I’d like to start by saying, that I have reverence for those who pursue a Master’s Degree through a University. Ultimately I too, have done so, albeit indirect means.
