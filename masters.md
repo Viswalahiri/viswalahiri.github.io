@@ -19,15 +19,34 @@ The list of my **Why’s** includes the following.
 
 ### UNIVERSITY-BACKED MASTER’S DEGREE
 
-|  BENEFITS <br/> | PITFALLS<br/> |
-|-----|-----|
-|  NETWORKING<br/> | INTENT BEHIND LEARNING<br/> |
-|  ACCESS TO PhD’S <br/> | COST<br/> |
-|  RECOGNITION<br/> | NOT STRICTLY INDUSTRY-ORIENTED<br/> |
-|  RESEARCH OPPORTUNITIES<br/> | LACK OF FLEXIBILITY<br/> |
-|   | TIME WASTED PREPARING FOR & WRITING ENTRANCE EXAMS, ADMISSION PROCESS<br/> |
-|   | APPROVAL IS REQUIRED TO ATTEND SELECT COURSES AFTER ADMISSION<br/> |
-<br/>
+* BENEFITS
+  - Networking
+  - Access to PhD's
+  - Recognition
+  - Research Opportunities
+- PITFALLS
+  - Intent behind learning not pure
+  - Not strictly industry oriented
+  - Lack of flexibility
+  - Time wasted to prepare & write entrance exams, and in admissions process.
+  - Approval required to attend select courses even after admission, you may not be admitted.
+
+### SELF_DIRECTED MASTER’S PROGRAM
+
+* BENEFITS
+  - Simulate real life
+  - Intent to learn not to pass an exam or graduate.
+  - Industry oriented curriculum
+  - Flexible schedule
+  - Pay a tenth of what you would have
+  - Gain discipline and self-reliance
+  - No commute to and fro college
+- PITFALLS
+  - No support and networking
+  - No research opportunities
+  - Additional time required to create the curriculum
+  - Confusion wrt soundness of curriculum
+  - No recognition
 
 ### SELF-DIRECTED MASTER’S PROGRAM
 
