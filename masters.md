@@ -1,6 +1,7 @@
 <h1 align="center">Self-Directed Master's Program</h1>
 
-# Motivation
+</br>
+<h2 align="center">Motivation</h2>
 I’d like to start by saying, that I have reverence for those who pursue a Master’s Degree through a University. Ultimately I too, have done so, albeit indirect means.
 
 A Self-Directed Master’s Program is an endeavor that takes a departure from the idea of traditional college-backed education.
@@ -11,11 +12,8 @@ Ultimately, even if one does approach an institution, they alone are responsible
 
 Of course, a self-directed Master’s Program has its pitfalls that will be addressed. Associated counteractions will also be explained.
 
-
-# Comparison:
-
-The list of my **Why’s** includes the following.
-
+</br>
+<h2 align="center">Comparision</h2>
 
 ## UNIVERSITY-BACKED MASTER’S DEGREE
 
@@ -48,7 +46,9 @@ The list of my **Why’s** includes the following.
   - Confusion wrt soundness of curriculum
   - Lack of Industry-Wide recognition
 
-# Alleviation of Self-Directed Master’s Pitfalls:
+</br>
+<h2 align="center">Alleviation of Self-Directed Master’s Pitfalls</h2>
+
 ## SUPPORT AND NETWORKING:
 I will have bi-weekly meetings with established PhDs / ML Engineers to discuss my problems.
 I will be more active in creating connections on LinkedIn and Medium by reaching out and posting valuable content, given that I do not possess a given platform to network. 
@@ -66,3 +66,12 @@ When all you have is a hammer, everything looks like a nail. Such is the paradox
 
 ## LACK OF RECOGNITION:
 It is wise to display your journey to act as unequivocal evidence. This I will do. It is the cost of learning to learn, and not to  pass an exam, and subsequently forget what I’ve read the day after.
+
+</br>
+<h2 align="center">Keeping Track of Progress</h2>
+
+Press [here](https://trello.com/b/Q8nUziwF/self-directed-machine-learning-masters-program) to gain access to my public Trello Board.
+
+<div>
+<iframe src="https://trello.com/b/Q8nUziwF/self-directed-machine-learning-masters-program" frameBorder="0" width="340" height="220"></iframe>
+</div>
