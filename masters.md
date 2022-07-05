@@ -1,6 +1,6 @@
 <h1 align="center">Self-Directed Master's Program</h1>
 
-</br>
+
 <h2 align="center">Motivation</h2>
 I’d like to start by saying, that I have reverence for those who pursue a Master’s Degree through a University. Ultimately I too, have done so, albeit indirect means.
 
@@ -72,6 +72,3 @@ It is wise to display your journey to act as unequivocal evidence. This I will d
 
 Press [here](https://trello.com/b/Q8nUziwF/self-directed-machine-learning-masters-program) to gain access to my public Trello Board.
 
-<div>
-<iframe src="https://trello.com/b/Q8nUziwF/self-directed-machine-learning-masters-program" frameBorder="0" width="340" height="220"></iframe>
-</div>
