@@ -12,7 +12,7 @@ Ultimately, even if one does approach an institution, they alone are responsible
 
 Of course, a self-directed Master’s Program has its pitfalls that will be addressed. Associated counteractions will also be explained.
 
-</br>
+
 <h2 align="center">Comparision</h2>
 
 ## UNIVERSITY-BACKED MASTER’S DEGREE
@@ -46,7 +46,7 @@ Of course, a self-directed Master’s Program has its pitfalls that will be addr
   - Confusion wrt soundness of curriculum
   - Lack of Industry-Wide recognition
 
-</br>
+
 <h2 align="center">Alleviation of Self-Directed Master’s Pitfalls</h2>
 
 ## SUPPORT AND NETWORKING:
@@ -67,7 +67,7 @@ When all you have is a hammer, everything looks like a nail. Such is the paradox
 ## LACK OF RECOGNITION:
 It is wise to display your journey to act as unequivocal evidence. This I will do. It is the cost of learning to learn, and not to  pass an exam, and subsequently forget what I’ve read the day after.
 
-</br>
+
 <h2 align="center">Keeping Track of Progress</h2>
 
 Press [here](https://trello.com/b/Q8nUziwF/self-directed-machine-learning-masters-program) to gain access to my public Trello Board.
