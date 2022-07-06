@@ -2,7 +2,7 @@
 
 
 <h2 align="center">Motivation</h2>
-I’d like to start by saying, that I have reverence for those who pursue a Master’s Degree through a University. Ultimately I too, have done so, albeit indirect means.
+I have reverence for those who pursue a Master’s Degree through a University. However, it just doesn't seem like the optimal decision for my own learning path and career.
 
 A Self-Directed Master’s Program is an endeavor that takes a departure from the idea of traditional college-backed education.
 
