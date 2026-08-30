@@ -45,13 +45,17 @@ export async function fetchContributions(project) {
 
     const merged = [];
     const open = [];
-    for (const item of body.items ?? []) {
+    const items = Array.isArray(body.items) ? body.items : [];
+    for (const item of items) {
       const mergedAt = item.pull_request?.merged_at;
+      // Coerce API-sourced values: number feeds URL construction, title/date
+      // feed rendering (rendering escapes, but keep the data well-typed too).
       const pr = {
-        number: item.number,
-        title: item.title,
-        date: (mergedAt ?? item.updated_at ?? '').slice(0, 10),
+        number: Number(item.number) || 0,
+        title: String(item.title ?? ''),
+        date: String(mergedAt ?? item.updated_at ?? '').slice(0, 10),
       };
+      if (!pr.number) continue;
       if (mergedAt) merged.push(pr);
       else if (item.state === 'open') open.push(pr);
     }
@@ -66,7 +70,7 @@ export async function fetchContributions(project) {
 }
 
 export function prUrl(project, number) {
-  return `https://github.com/${project.org}/${project.repo}/pull/${number}`;
+  return `https://github.com/${project.org}/${project.repo}/pull/${Number(number) || 0}`;
 }
 
 export function repoUrl(project) {

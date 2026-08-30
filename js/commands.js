@@ -108,10 +108,11 @@ function prLine(project, pr, kind) {
 }
 
 function statsLine(term, project, r) {
-  const parts = [];
-  parts.push(`<span class="pr-merged">✔ ${r.merged.length} merged</span>`);
-  parts.push(`<span class="pr-open">● ${r.open.length} in progress</span>`);
-  return `${parts.join(' <span class="dim">·</span> ')} &nbsp;<span class="dim">→</span> ${term.cmdToken(`projects ${project.key}`)}`;
+  return (
+    `<span class="pr-merged">✔ ${r.merged.length} merged</span> <span class="dim">·</span> ` +
+    `<span class="pr-open">● ${r.open.length} in progress</span> ` +
+    `&nbsp;<span class="dim">→</span> ${term.cmdToken(`projects ${project.key}`)}`
+  );
 }
 
 async function printProjectsOverview(term) {
@@ -254,13 +255,8 @@ export function registerCommands(term) {
   term.unknownHandler = async (word) => {
     const r = vfs.resolve(word);
     if (!r) return false;
-    if (r.node.type === 'dir') {
-      await term.exec(`cd ${word}`, { echo: false });
-    } else if (r.node.name.endsWith('.pdf')) {
-      await term.exec('resume', { echo: false });
-    } else {
-      await term.exec(r.node.cmd, { echo: false });
-    }
+    if (r.node.type === 'dir') await term.exec(`cd ${word}`, { echo: false });
+    else await term.exec(r.node.cmd, { echo: false });
     return true;
   };
 

@@ -3,7 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://assets.calendly.com 'sha256-L1jYYWIZr1NKk2CbWtBERpI09MmAERESdIOG1bzzbOo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://assets.calendly.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://assets.calendly.com; connect-src 'self' https://api.github.com; frame-src https://calendly.com https://*.calendly.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#0b100d">
   <title>Viz Hejeebu — ML/AI Infrastructure Engineer</title>
+  <link rel="canonical" href="https://viswalahiri.github.io/">
   <meta name="description" content="Viz Hejeebu is an ML/AI infrastructure engineer in Bothell, WA — distributed training, high-throughput inference, and LLM systems on GPU and TPU clusters. Explore this portfolio through an interactive terminal.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Viz Hejeebu — ML/AI Infrastructure Engineer">
@@ -14,13 +17,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Viz Hejeebu","jobTitle":"ML/AI Infrastructure Engineer","url":"https://viswalahiri.github.io/","sameAs":["https://linkedin.com/in/lahirihejeebu","https://github.com/Viswalahiri"],"address":{"@type":"PostalAddress","addressLocality":"Bothell","addressRegion":"WA"}}</script>
 </head>
 <body>
   <div class="crt-overlay" aria-hidden="true"></div>
 
   <main id="terminal" aria-label="Interactive terminal portfolio">
     <div id="output" aria-live="polite"></div>
-    <div id="input-line">
+    <div id="input-line" aria-hidden="true">
       <span class="prompt">visitor@viz:~$</span>
       <span id="input-display"><span id="pre-caret"></span><span id="caret">&nbsp;</span><span id="post-caret"></span></span>
     </div>

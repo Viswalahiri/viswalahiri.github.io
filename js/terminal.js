@@ -5,7 +5,8 @@ export function escapeHtml(s) {
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
 }
 
 export class Terminal {
@@ -27,6 +28,8 @@ export class Terminal {
     this.historyIndex = -1;
     this.draft = '';
 
+    // Start visually unfocused; the input's focus event lifts this.
+    this.terminalEl.classList.add('blurred');
     this.#wireEvents();
   }
 
@@ -45,8 +48,6 @@ export class Terminal {
     this.output.appendChild(el);
     return el;
   }
-
-  printLines(lines) { for (const l of lines) this.print(l); }
 
   spacer() { this.print('<span></span>', 'spacer'); }
 
@@ -198,6 +199,7 @@ export class Terminal {
       candidates = spec.completeArgs().filter((c) => c.startsWith(stem));
     }
 
+    candidates = [...new Set(candidates)];
     if (!candidates.length) return;
     if (candidates.length === 1) {
       parts[parts.length - 1] = candidates[0];

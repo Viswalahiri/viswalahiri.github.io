@@ -17,6 +17,18 @@ certs, contact). Edit that file only for content updates.
   "Intro chat — 30 min"), connect Google Calendar, then paste the event link
   into `CALENDLY_URL` in `js/data.js`. Until then, `book` falls back to email.
 
+## Security note
+
+`index.html` ships a Content-Security-Policy meta tag. If you ever edit the
+inline JSON-LD block in `index.html`, recompute its hash and update the
+`sha256-…` value in the CSP:
+
+```sh
+python3 -c "import hashlib,base64,re;s=open('index.html').read();print('sha256-'+base64.b64encode(hashlib.sha256(re.search(r'<script type=\"application/ld\+json\">(.*?)</script>',s,16).group(1).encode()).digest()).decode())"
+```
+
+New external domains (scripts, frames, APIs) must also be added to the CSP.
+
 ## Local development
 
 ```sh
