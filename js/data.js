@@ -28,7 +28,7 @@ export const ABOUT = [
   'HPC work — accelerator performance engineering and cloud-native ML infra on',
   'GKE for demanding federal defense and high-frequency trading workloads.',
   '',
-  'Off the clock I contribute to kubernetes-sigs (Kueue, JobSet) and chase',
+  'Off the clock I contribute to kubernetes-sigs (Kueue, JobSet, LWS) and chase',
   'benchmark numbers that make schedulers and interconnects sweat.',
   '',
   'B.Tech in Computer Science and Engineering, GITAM Deemed to be University (2017–2021).',
@@ -139,18 +139,72 @@ export const EXPERIENCE = [
   },
 ];
 
+// GitHub username used for the live contribution lookups in js/github.js.
+export const GITHUB_USER = 'Viswalahiri';
+
+// Each project is drillable via `projects <key>`. PR lists are fetched live
+// from the GitHub API; `fallback` is a baked snapshot (see `snapshotDate`)
+// shown when the API is unreachable or rate-limited.
+export const PROJECTS_SNAPSHOT_DATE = '2026-08-30';
+
 export const PROJECTS = [
   {
+    key: 'kueue',
+    aliases: [],
     name: 'Kueue',
-    url: 'https://github.com/kubernetes-sigs/kueue',
+    org: 'kubernetes-sigs',
+    repo: 'kueue',
+    tagline: 'Kubernetes-native job queueing',
     blurb:
-      'Kubernetes-native job queueing. Active contributor — quota-aware scheduling for batch and ML workloads.',
+      'Quota management, fair sharing, and preemption for batch and ML workloads on Kubernetes — the scheduler layer that decides which training jobs run, wait, or get preempted.',
+    focus:
+      'Fair-sharing & preemption internals (DRS) and topology-aware scheduling (TAS)',
+    fallback: {
+      merged: [
+        { number: 14765, title: 'Reuse DRS zero-weight-borrows check in fair sharing preemption', date: '2026-08-24' },
+        { number: 14762, title: 'Drop EquateEmpty from TAS net usage test', date: '2026-08-24' },
+        { number: 14754, title: 'Test TAS net usage for domain count that is shrinking', date: '2026-08-23' },
+      ],
+      open: [
+        { number: 14775, title: 'Fix Scheduling Equivalence Hashing under UsageBasedAdmissionFairSharing', date: '2026-08-29' },
+      ],
+    },
   },
   {
+    key: 'jobset',
+    aliases: [],
     name: 'JobSet',
-    url: 'https://github.com/kubernetes-sigs/jobset',
+    org: 'kubernetes-sigs',
+    repo: 'jobset',
+    tagline: 'Kubernetes-native API for distributed ML training & HPC',
     blurb:
-      'Kubernetes-native API for distributed ML training and HPC workloads. Active contributor.',
+      'Manages groups of Jobs as a single unit — the standard way to run multi-node distributed training and HPC workloads on Kubernetes.',
+    focus: 'Lifecycle correctness: volume-claim retention, admission edge cases',
+    fallback: {
+      merged: [
+        { number: 1305, title: 'Fix nil deref of whenDeleted in volume claim retention checks', date: '2026-08-28' },
+      ],
+      open: [
+        { number: 1308, title: 'Fix admission rejecting JobSets that reuse a retained PVC', date: '2026-08-30' },
+      ],
+    },
+  },
+  {
+    key: 'lws',
+    aliases: ['leaderworkerset'],
+    name: 'LWS (LeaderWorkerSet)',
+    org: 'kubernetes-sigs',
+    repo: 'lws',
+    tagline: 'Multi-host LLM inference on Kubernetes',
+    blurb:
+      'An API for deploying groups of pods as one replicated unit — built for serving models that span nodes (vLLM/SGLang multi-host inference, disaggregated prefill/decode).',
+    focus: 'DisaggregatedSet API framing and CRD upgrade docs',
+    fallback: {
+      merged: [],
+      open: [
+        { number: 1010, title: '[docs] Fix DisaggregatedSet version framing and CRD upgrade steps', date: '2026-08-30' },
+      ],
+    },
   },
 ];
 

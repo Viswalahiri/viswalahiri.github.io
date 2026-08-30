@@ -162,6 +162,10 @@ pre {
 
 .spacer { height: 0.8rem; }
 
+/* PR status glyphs (GitHub semantics: merged = violet, open = green) */
+.pr-merged { color: #b493f5; }
+.pr-open { color: #3fb950; }
+
 /* experience list rows */
 .xp-row { display: block; }
 .xp-idx { color: var(--accent); }

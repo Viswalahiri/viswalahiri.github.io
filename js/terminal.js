@@ -80,7 +80,7 @@ export class Terminal {
       const name = this.aliases.get(word.toLowerCase()) ?? word.toLowerCase();
       const spec = this.commands.get(name);
       if (spec) {
-        await spec.run(args, this);
+        await spec.run(args, this, word.toLowerCase());
       } else {
         this.print(
           `<span class="error">command not found: ${escapeHtml(word)}</span> — type ${this.cmdToken('help')} for a list of commands`

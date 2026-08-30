@@ -1,7 +1,9 @@
 import { escapeHtml } from './terminal.js';
 import {
-  CONFIG, CONTACT, ABOUT, EXPERIENCE, PROJECTS, SKILLS, CERTS, EDUCATION,
+  CONFIG, CONTACT, ABOUT, EXPERIENCE, PROJECTS, PROJECTS_SNAPSHOT_DATE,
+  GITHUB_USER, SKILLS, CERTS, EDUCATION,
 } from './data.js';
+import { fetchContributions, prUrl, repoUrl } from './github.js';
 
 const BANNER_ART = String.raw`
  __      _______ ______
@@ -70,6 +72,106 @@ function printRole(term, role) {
   if (i < EXPERIENCE.length - 1) nav.push(term.cmdToken(`experience ${i + 2}`, '↓ older'));
   nav.push(term.cmdToken('experience', 'back to list'));
   term.print(`<span class="dim">${nav.join(' &nbsp;·&nbsp; ')}</span>`);
+}
+
+// ---------- projects helpers ----------
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+  });
+}
+
+function findProject(arg) {
+  const q = arg.toLowerCase();
+  return PROJECTS.find(
+    (p) => p.key === q || p.aliases.includes(q) || p.name.toLowerCase().includes(q)
+  );
+}
+
+function prLine(project, pr, kind) {
+  const glyph = kind === 'merged'
+    ? '<span class="pr-merged">✔</span>'
+    : '<span class="pr-open">●</span>';
+  const when = kind === 'merged'
+    ? `merged ${fmtDate(pr.date)}`
+    : `updated ${fmtDate(pr.date)}`;
+  return (
+    `${glyph} <a href="${prUrl(project, pr.number)}" target="_blank" rel="noopener">#${pr.number}</a> ` +
+    `${escapeHtml(pr.title)} <span class="dim">· ${when}</span>`
+  );
+}
+
+function statsLine(term, project, r) {
+  const parts = [];
+  parts.push(`<span class="pr-merged">✔ ${r.merged.length} merged</span>`);
+  parts.push(`<span class="pr-open">● ${r.open.length} in progress</span>`);
+  return `${parts.join(' <span class="dim">·</span> ')} &nbsp;<span class="dim">→</span> ${term.cmdToken(`projects ${project.key}`)}`;
+}
+
+async function printProjectsOverview(term) {
+  term.print('<span class="section-title">Open source</span> <span class="dim">· active contributor to kubernetes-sigs</span>');
+  term.spacer();
+  const probe = term.print('querying api.github.com…', 'dim');
+  const results = await Promise.all(PROJECTS.map((p) => fetchContributions(p)));
+  probe.remove();
+
+  PROJECTS.forEach((p, i) => {
+    term.print(`${term.cmdToken(`projects ${p.key}`, p.name)} <span class="dim">— ${escapeHtml(p.tagline)}</span>`);
+    term.print(statsLine(term, p, results[i]), 'indent');
+    term.spacer();
+  });
+
+  term.print(`Full repo list: ${term.link(CONTACT.github)}`);
+  if (results.some((r) => !r.live)) {
+    term.print(
+      `<span class="dim">GitHub API unreachable — showing a snapshot from ${fmtDate(PROJECTS_SNAPSHOT_DATE)}.</span>`
+    );
+  }
+}
+
+async function printProjectDetail(term, project) {
+  term.print(
+    `<span class="section-title">${escapeHtml(project.name)}</span> ` +
+    `<span class="dim">· ${escapeHtml(`${project.org}/${project.repo}`)}</span>`
+  );
+  term.print(escapeHtml(project.blurb));
+  term.spacer();
+  term.print(`<span class="accent bold">My focus</span>&nbsp; ${escapeHtml(project.focus)}`);
+  term.print(`<span class="accent bold">Repo</span>&nbsp;&nbsp;&nbsp;&nbsp; ${term.link(repoUrl(project), `github.com/${project.org}/${project.repo}`)}`);
+  term.spacer();
+
+  const probe = term.print('querying api.github.com…', 'dim');
+  const r = await fetchContributions(project);
+  probe.remove();
+
+  term.print(`<span class="section-title">Merged</span> <span class="dim">(${r.merged.length})</span>`);
+  if (r.merged.length) {
+    for (const pr of r.merged) term.print(prLine(project, pr, 'merged'), 'indent');
+  } else {
+    term.print('nothing merged here yet — first one is in review ↓', 'indent dim');
+  }
+  term.spacer();
+
+  term.print(`<span class="section-title">In progress</span> <span class="dim">(${r.open.length})</span>`);
+  if (r.open.length) {
+    for (const pr of r.open) term.print(prLine(project, pr, 'open'), 'indent');
+  } else {
+    term.print('nothing open right now', 'indent dim');
+  }
+  term.spacer();
+
+  const allPRs = `${repoUrl(project)}/pulls?q=${encodeURIComponent(`is:pr author:${GITHUB_USER}`)}`;
+  const nav = PROJECTS.filter((p) => p !== project)
+    .map((p) => term.cmdToken(`projects ${p.key}`));
+  nav.push(term.cmdToken('projects', 'back to list'));
+  term.print(`${term.link(allPRs, 'view these PRs on GitHub')} <span class="dim">&nbsp;·&nbsp; ${nav.join(' &nbsp;·&nbsp; ')}</span>`);
+  if (!r.live) {
+    term.print(
+      `<span class="dim">GitHub API unreachable — showing a snapshot from ${fmtDate(PROJECTS_SNAPSHOT_DATE)}.</span>`
+    );
+  }
 }
 
 // ---------- calendly ----------
@@ -181,18 +283,25 @@ export function registerCommands(term) {
   });
 
   term.register('projects', {
-    desc: 'open-source work',
-    run: (_args, t) => {
-      t.print('<span class="section-title">Open source</span>');
-      t.spacer();
-      t.print('Active contributor to kubernetes-sigs:');
-      t.spacer();
-      for (const p of PROJECTS) {
-        t.print(`<span class="accent">›</span> <span class="bold">${escapeHtml(p.name)}</span> — ${escapeHtml(p.blurb)}`, 'indent');
-        t.print(`  ${t.link(p.url)}`, 'indent');
+    desc: 'open-source work — projects <name> to dig in',
+    aliases: ['oss', 'kueue', 'jobset', 'lws'],
+    completeArgs: () => PROJECTS.map((p) => p.key),
+    run: async (args, t, invokedAs) => {
+      // `kueue`, `jobset`, `lws` work as direct commands too
+      const direct = PROJECTS.find((p) => p.key === invokedAs);
+      const query = direct ? direct.key : args.join(' ');
+      if (!query) {
+        await printProjectsOverview(t);
+        return;
       }
-      t.spacer();
-      t.print(`Full repo list: ${t.link(CONTACT.github)}`);
+      const project = findProject(query);
+      if (project) await printProjectDetail(t, project);
+      else {
+        t.print(
+          `<span class="error">no such project: ${escapeHtml(query)}</span> — try ` +
+          PROJECTS.map((p) => t.cmdToken(`projects ${p.key}`)).join('<span class="dim">, </span>')
+        );
+      }
     },
   });
 
