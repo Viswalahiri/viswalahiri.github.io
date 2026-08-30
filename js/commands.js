@@ -4,6 +4,7 @@ import {
   GITHUB_USER, SKILLS, CERTS, EDUCATION,
 } from './data.js';
 import { fetchContributions, prUrl, repoUrl } from './github.js';
+import { buildFS, VFS } from './fs.js';
 
 const BANNER_ART = String.raw`
  __      _______ ______
@@ -26,6 +27,9 @@ export function printBanner(term) {
     `<span class="chips">${CHIP_COMMANDS.map(
       (c) => `<button class="chip" data-cmd="${c}">${c}</button>`
     ).join('')}</span>`
+  );
+  term.print(
+    `<span class="dim">…or wander around like it's a real shell:</span> ${term.cmdToken('ls')} <span class="dim">·</span> ${term.cmdToken('cd experience')}`
   );
   term.spacer();
 }
@@ -225,21 +229,44 @@ const NVIDIA_SMI = String.raw`
 +---------------------------------------------------------------------------------------+
 `;
 
-// ---------- fake filesystem (ls / cat) ----------
+// ---------- virtual filesystem rendering ----------
 
-const FAKE_FS = [
-  ['about.txt', 'about'],
-  ['experience.log', 'experience'],
-  ['projects/', 'projects'],
-  ['skills.md', 'skills'],
-  ['certs.txt', 'certs'],
-  ['contact.vcf', 'contact'],
-  ['resume.pdf', 'resume'],
-];
+// `prefix` is the listed directory's ~-path, so tokens stay clickable even
+// after the visitor cds elsewhere.
+function lsEntries(term, dir, prefix) {
+  return dir.children
+    .map((c) =>
+      c.type === 'dir'
+        ? term.cmdToken(`cd ${prefix}/${c.name}`, `${c.name}/`, 'fs-dir')
+        : term.cmdToken(`cat ${prefix}/${c.name}`, c.name, 'fs-file')
+    )
+    .join('&nbsp;&nbsp;');
+}
 
 // ---------- registration ----------
 
 export function registerCommands(term) {
+  const vfs = new VFS(buildFS());
+
+  // Bare filenames/dirs run from the current directory: `google` inside
+  // ~/experience opens that role; `experience` (the dir) cds into it — but
+  // registered commands always win, so this only fires for unmatched words.
+  term.unknownHandler = async (word) => {
+    const r = vfs.resolve(word);
+    if (!r) return false;
+    if (r.node.type === 'dir') {
+      await term.exec(`cd ${word}`, { echo: false });
+    } else if (r.node.name.endsWith('.pdf')) {
+      await term.exec('resume', { echo: false });
+    } else {
+      await term.exec(r.node.cmd, { echo: false });
+    }
+    return true;
+  };
+
+  // Tab completion on the first word also offers the cwd's entries.
+  term.extraCompletions = () => vfs.cwd().children.map((c) => c.name);
+
   term.register('help', {
     desc: 'list available commands',
     run: (_args, t) => {
@@ -252,6 +279,9 @@ export function registerCommands(term) {
         t.print(`  ${t.cmdToken(name)}${pad}<span class="dim">${escapeHtml(spec.desc)}</span>`);
       }
       t.spacer();
+      t.print(
+        `<span class="dim">This is a real filesystem — try</span> ${t.cmdToken('cd experience')} <span class="dim">then</span> ${t.cmdToken('ls')}<span class="dim">, or run a file by name.</span>`
+      );
       t.print('<span class="dim">Tips: Tab completes, ↑/↓ recall history, Ctrl+L clears. A few commands are undocumented…</span>');
     },
   });
@@ -402,6 +432,70 @@ export function registerCommands(term) {
     },
   });
 
+  term.register('ls', {
+    desc: 'list directory contents',
+    aliases: ['ll', 'dir'],
+    completeArgs: () => vfs.cwd().children.map((c) => c.name),
+    run: (args, t) => {
+      const target = args.find((a) => !a.startsWith('-'));
+      let node = vfs.cwd();
+      let prefix = vfs.path();
+      if (target) {
+        const r = vfs.resolve(target);
+        if (!r) {
+          t.print(`ls: cannot access '${escapeHtml(target)}': No such file or directory`, 'error');
+          return;
+        }
+        node = r.node;
+        prefix = ['~', ...r.dirStack.map((n) => n.name)].join('/');
+      }
+      if (node.type === 'file') t.print(t.cmdToken(`cat ${prefix}/${node.name}`, node.name, 'fs-file'));
+      else t.print(lsEntries(t, node, prefix));
+    },
+  });
+
+  term.register('cd', {
+    desc: 'change directory — try cd experience',
+    completeArgs: () =>
+      vfs.cwd().children.filter((c) => c.type === 'dir').map((c) => c.name).concat('..', '~'),
+    run: (args, t) => {
+      const err = vfs.cd(args[0] ?? '');
+      if (err) {
+        t.print(escapeHtml(err), 'error');
+        return;
+      }
+      t.setPrompt(`visitor@viz:${vfs.path()}$`);
+      const here = vfs.cwd();
+      if (here.children?.length) t.print(lsEntries(t, here, vfs.path()));
+    },
+  });
+
+  term.register('cat', {
+    desc: 'print a file — try cat skills.md',
+    completeArgs: () => vfs.cwd().children.filter((c) => c.type === 'file').map((c) => c.name),
+    run: async (args, t) => {
+      const target = args.find((a) => !a.startsWith('-'));
+      if (!target) {
+        t.print(`usage: cat &lt;file&gt; — try ${t.cmdToken('ls')} first`, 'dim');
+        return;
+      }
+      const r = vfs.resolve(target);
+      if (!r) {
+        t.print(`cat: ${escapeHtml(target)}: No such file or directory`, 'error');
+        return;
+      }
+      if (r.node.type === 'dir') {
+        t.print(`cat: ${escapeHtml(target)}: Is a directory — try ${t.cmdToken(`cd ${r.node.name}`)}`);
+        return;
+      }
+      if (r.node.name.endsWith('.pdf')) {
+        t.print(`cat: ${escapeHtml(r.node.name)}: binary file — try ${t.cmdToken('resume')} instead`);
+        return;
+      }
+      await t.exec(r.node.cmd, { echo: false });
+    },
+  });
+
   term.register('clear', {
     desc: 'clear the terminal (Ctrl+L)',
     aliases: ['cls'],
@@ -424,35 +518,6 @@ export function registerCommands(term) {
   term.register('nvidia-smi', {
     hidden: true,
     run: (_args, t) => t.print(`<pre>${escapeHtml(NVIDIA_SMI.trim())}</pre>`),
-  });
-
-  term.register('ls', {
-    hidden: true,
-    aliases: ['ll', 'dir'],
-    run: (_args, t) => {
-      t.print(FAKE_FS.map(([f, cmd]) => t.cmdToken(cmd, f)).join('&nbsp;&nbsp;'));
-    },
-  });
-
-  term.register('cat', {
-    hidden: true,
-    run: (args, t) => {
-      const file = args.join(' ').trim();
-      if (!file) {
-        t.print('usage: cat <file> — try <span class="cmd" data-cmd="ls">ls</span> first', 'dim');
-        return;
-      }
-      const entry = FAKE_FS.find(([f]) => f.replace(/\/$/, '') === file.replace(/\/$/, ''));
-      if (!entry) {
-        t.print(`cat: ${escapeHtml(file)}: No such file or directory`, 'error');
-      } else if (entry[0] === 'resume.pdf') {
-        t.print(`cat: resume.pdf: binary file — try ${t.cmdToken('resume')} instead`);
-      } else if (entry[0] === 'projects/') {
-        t.print(`cat: projects/: Is a directory — try ${t.cmdToken('projects')}`);
-      } else {
-        t.exec(entry[1], { echo: false });
-      }
-    },
   });
 
   term.register('vim', {
@@ -495,7 +560,7 @@ export function registerCommands(term) {
 
   term.register('pwd', {
     hidden: true,
-    run: (_args, t) => t.print('/home/viz/portfolio'),
+    run: (_args, t) => t.print(escapeHtml(vfs.sysPath())),
   });
 
   term.register('hello', {

@@ -16,7 +16,10 @@ export class Terminal {
     this.caret = document.getElementById('caret');
     this.postCaret = document.getElementById('post-caret');
     this.terminalEl = document.getElementById('terminal');
+    this.promptEl = document.querySelector('#input-line .prompt');
     this.promptText = 'visitor@viz:~$';
+    this.unknownHandler = null;   // async (word, args) => handled?
+    this.extraCompletions = null; // () => extra first-token candidates
 
     this.commands = new Map();   // name -> {desc, hidden, run, completeArgs?}
     this.aliases = new Map();    // alias -> name
@@ -54,8 +57,14 @@ export class Terminal {
   }
 
   // Render a clickable command token.
-  cmdToken(cmd, label = cmd) {
-    return `<span class="cmd" role="button" tabindex="0" data-cmd="${escapeHtml(cmd)}">${escapeHtml(label)}</span>`;
+  cmdToken(cmd, label = cmd, cls = '') {
+    const classes = cls ? `cmd ${cls}` : 'cmd';
+    return `<span class="${classes}" role="button" tabindex="0" data-cmd="${escapeHtml(cmd)}">${escapeHtml(label)}</span>`;
+  }
+
+  setPrompt(text) {
+    this.promptText = text;
+    if (this.promptEl) this.promptEl.textContent = text;
   }
 
   link(href, label = href) {
@@ -81,6 +90,8 @@ export class Terminal {
       const spec = this.commands.get(name);
       if (spec) {
         await spec.run(args, this, word.toLowerCase());
+      } else if (this.unknownHandler && (await this.unknownHandler(word, args))) {
+        // handled as a filesystem entry
       } else {
         this.print(
           `<span class="error">command not found: ${escapeHtml(word)}</span> — type ${this.cmdToken('help')} for a list of commands`
@@ -174,6 +185,11 @@ export class Terminal {
       candidates = [...this.commands.entries()]
         .filter(([name, spec]) => !spec.hidden && name.startsWith(stem))
         .map(([name]) => name);
+      if (this.extraCompletions) {
+        candidates.push(
+          ...this.extraCompletions().filter((n) => n.toLowerCase().startsWith(stem))
+        );
+      }
     } else {
       const name = this.aliases.get(parts[0].toLowerCase()) ?? parts[0].toLowerCase();
       const spec = this.commands.get(name);

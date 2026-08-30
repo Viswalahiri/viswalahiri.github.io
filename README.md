@@ -34,6 +34,12 @@ index.html        page shell, SEO meta, noscript fallback
 css/style.css     theme, CRT flourish, responsive rules
 js/terminal.js    terminal emulator (input, history, tab completion)
 js/commands.js    command registry incl. easter eggs
+js/fs.js          virtual filesystem (cd/ls/cat navigation layer)
+js/github.js      live PR data for `projects` (cache + snapshot fallback)
 js/data.js        ALL content + config
 js/main.js        boot
 ```
+
+The virtual filesystem in `js/fs.js` is generated from `js/data.js`
+(experience roles and projects become files), so it stays in sync with
+content edits automatically.

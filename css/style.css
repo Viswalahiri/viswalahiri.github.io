@@ -162,6 +162,11 @@ pre {
 
 .spacer { height: 0.8rem; }
 
+/* virtual filesystem listings: dirs bold accent, files plain like real ls */
+.fs-dir { font-weight: 700; text-decoration: none; }
+.fs-file { color: var(--fg); text-decoration: none; }
+.fs-file:hover, .fs-dir:hover { color: var(--accent); text-decoration: underline dotted; }
+
 /* PR status glyphs (GitHub semantics: merged = violet, open = green) */
 .pr-merged { color: #b493f5; }
 .pr-open { color: #3fb950; }
