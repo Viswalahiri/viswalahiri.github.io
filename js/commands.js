@@ -15,21 +15,24 @@ const BANNER_ART = String.raw`
      \/   |_____/_____|
 `;
 
-const CHIP_COMMANDS = ['help', 'about', 'experience', 'projects', 'skills', 'contact', 'resume', 'book'];
+// Contact / resume / book live in the persistent top bar, so the chips stay
+// focused on content and the first screen stays uncluttered.
+const CHIP_COMMANDS = ['about', 'experience', 'projects', 'skills', 'certs', 'contact'];
 
 export function printBanner(term) {
   term.print(`<pre class="banner-art">${escapeHtml(BANNER_ART.replace(/^\n/, ''))}</pre>`);
-  term.print(`<span class="bold">${escapeHtml(CONTACT.name)}</span> — ${escapeHtml(CONTACT.title)}`);
-  term.print('GPU & TPU clusters · distributed training · high-throughput inference', 'dim');
+  term.print(
+    `<span class="bold">${escapeHtml(CONTACT.name)}</span> <span class="dim">— ${escapeHtml(CONTACT.title)} · ${escapeHtml(CONTACT.location)}</span>`
+  );
+  term.print('GPU &amp; TPU clusters · distributed training · high-throughput inference', 'dim');
   term.spacer();
-  term.print(`Type ${term.cmdToken('help')} to see what I can do, or click a command:`);
   term.print(
     `<span class="chips">${CHIP_COMMANDS.map(
       (c) => `<button class="chip" data-cmd="${c}">${c}</button>`
     ).join('')}</span>`
   );
   term.print(
-    `<span class="dim">…or wander around like it's a real shell:</span> ${term.cmdToken('ls')} <span class="dim">·</span> ${term.cmdToken('cd experience')}`
+    `<span class="dim">Type a command,</span> ${term.cmdToken('help')} <span class="dim">for all of them, or explore like a shell:</span> ${term.cmdToken('ls')}`
   );
   term.spacer();
 }
@@ -49,10 +52,11 @@ function printRoleList(term) {
   term.print('<span class="section-title">Career journey</span> <span class="dim">(newest first)</span>');
   term.spacer();
   EXPERIENCE.forEach((r, i) => {
+    const via = r.via ? ` <span class="dim">(${escapeHtml(r.via)})</span>` : '';
     term.print(
       `<span class="xp-row">${term.cmdToken(`experience ${i + 1}`, `[${i + 1}]`)} ` +
-      `<span class="bold">${escapeHtml(r.company)}</span><br>` +
-      `<span class="indent"></span>    ${escapeHtml(r.title)} · <span class="xp-dates">${escapeHtml(r.dates)}</span></span>`
+      `<span class="bold">${escapeHtml(r.company)}</span>${via}<br>` +
+      `<span class="xp-sub">${escapeHtml(r.title)} · <span class="xp-dates">${escapeHtml(r.dates)}</span></span></span>`
     );
   });
   term.spacer();
@@ -64,7 +68,10 @@ function printRoleList(term) {
 
 function printRole(term, role) {
   const i = EXPERIENCE.indexOf(role);
-  term.print(`<span class="section-title">${escapeHtml(role.company)}</span> <span class="dim">· ${escapeHtml(role.location)}</span>`);
+  const via = role.via ? ` <span class="dim">${escapeHtml(role.via)}</span>` : '';
+  term.print(
+    `<span class="section-title">${escapeHtml(role.company)}</span>${via} <span class="dim">· ${escapeHtml(role.location)}</span>`
+  );
   term.print(`${escapeHtml(role.title)} · <span class="xp-dates">${escapeHtml(role.dates)}</span>`);
   term.spacer();
   term.print(escapeHtml(role.summary));
@@ -336,9 +343,21 @@ export function registerCommands(term) {
     run: (_args, t) => {
       t.print('<span class="section-title">Skills</span>');
       t.spacer();
-      for (const [category, items] of SKILLS) {
-        t.print(`<span class="accent bold">${escapeHtml(category)}</span>`);
-        t.print(escapeHtml(items), 'indent');
+      for (const group of SKILLS) {
+        t.print(`<span class="accent bold">${escapeHtml(group.category)}</span>`);
+        if (group.groups) {
+          const pad = Math.max(...group.groups.map((g) => g.name.length)) + 2;
+          for (const sub of group.groups) {
+            t.print(
+              `<span class="skill-sub">${escapeHtml(sub.name)}</span>` +
+              '&nbsp;'.repeat(pad - sub.name.length) +
+              escapeHtml(sub.items),
+              'indent skill-row'
+            );
+          }
+        } else {
+          t.print(escapeHtml(group.items), 'indent');
+        }
         t.spacer();
       }
     },
@@ -360,7 +379,9 @@ export function registerCommands(term) {
     desc: 'where I studied',
     aliases: ['edu'],
     run: (_args, t) => {
-      t.print(`<span class="bold">${escapeHtml(EDUCATION.school)}</span>`);
+      t.print(
+        `<span class="bold">${escapeHtml(EDUCATION.school)}</span> <span class="dim">· ${escapeHtml(EDUCATION.location)}</span>`
+      );
       t.print(`${escapeHtml(EDUCATION.degree)} · <span class="dim">${escapeHtml(EDUCATION.years)}</span>`);
     },
   });
@@ -369,14 +390,19 @@ export function registerCommands(term) {
     desc: 'how to reach me',
     aliases: ['email'],
     run: (_args, t) => {
+      const row = (label, value) =>
+        t.print(
+          `<span class="contact-key">${escapeHtml(label)}</span>${'&nbsp;'.repeat(10 - label.length)}${value}`
+        );
       t.print('<span class="section-title">Contact</span>');
       t.spacer();
-      t.print(`  email&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:${CONTACT.email}">${CONTACT.email}</a>`);
-      t.print(`  linkedin&nbsp;${t.link(CONTACT.linkedin, CONTACT.linkedin.replace('https://', ''))}`);
-      t.print(`  github&nbsp;&nbsp;&nbsp;${t.link(CONTACT.github, CONTACT.github.replace('https://', ''))}`);
-      t.print(`  location&nbsp;${escapeHtml(CONTACT.location)}`);
+      row('email', `<a href="mailto:${CONTACT.email}">${escapeHtml(CONTACT.email)}</a>`);
+      row('phone', `<a href="${CONTACT.phoneHref}">${escapeHtml(CONTACT.phone)}</a>`);
+      row('linkedin', t.link(CONTACT.linkedin, CONTACT.linkedin.replace('https://', '')));
+      row('github', t.link(CONTACT.github, CONTACT.github.replace('https://', '')));
+      row('location', `${escapeHtml(CONTACT.location)} <span class="dim">· ${escapeHtml(CONTACT.citizenship)}</span>`);
       t.spacer();
-      t.print(`<span class="dim">Or grab time directly:</span> ${t.cmdToken('book')}`);
+      t.print(`<span class="dim">Or grab 30 minutes on my calendar:</span> ${t.cmdToken('book')}`);
     },
   });
 

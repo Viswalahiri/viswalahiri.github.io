@@ -2,139 +2,159 @@
 // no other code changes needed for content updates.
 
 export const CONFIG = {
-  // Paste your Calendly event link here (e.g. "https://calendly.com/your-handle/30min").
-  // While empty, the `book` command shows an email fallback instead.
-  CALENDLY_URL: '',
+  CALENDLY_URL: 'https://calendly.com/lahiri-coffee-chat/30min',
   RESUME_PATH: 'assets/Viswalahiri_Hejeebu_Resume.pdf',
 };
 
 export const CONTACT = {
   name: 'Viz Hejeebu',
+  fullName: 'Viswalahiri (Viz) Hejeebu',
   title: 'ML/AI Infrastructure Engineer',
   location: 'Bothell, WA',
   email: 'lhejeebu@gmail.com',
+  phone: '(425) 780-6102',
+  phoneHref: 'tel:+14257806102',
   linkedin: 'https://linkedin.com/in/lahirihejeebu',
   github: 'https://github.com/Viswalahiri',
+  citizenship: 'US Citizen',
 };
 
 export const ABOUT = [
-  "I'm Viz — an ML/AI infrastructure engineer in Bothell, WA.",
+  "I'm Viz — a machine learning engineer in Bothell, WA.",
   '',
-  'For 5+ years I\'ve built and optimized large-scale ML systems across GPU and',
-  'TPU clusters: distributed training, high-throughput inference, and LLM',
-  'applications. US Citizen.',
+  '5+ years building and optimizing large-scale ML systems across GPU and TPU',
+  'clusters, spanning distributed training, high-throughput inference, and LLM',
+  'applications.',
   '',
-  'Currently at Google (via Quadrant Technologies) doing TPU/GPU inference and',
-  'HPC work — accelerator performance engineering and cloud-native ML infra on',
-  'GKE for demanding federal defense and high-frequency trading workloads.',
+  'Right now I drive performance engineering for mission-critical on-premise',
+  'workloads at Google — accelerator benchmarking and cloud-native ML infra on',
+  'GKE for federal defense and high-frequency trading clients.',
+  '',
+  'Before that: agentic AI systems, RAG, deep learning, and LLM fine-tuning',
+  'shipped across AWS, Azure, GCP, and Databricks. I have led engineering teams',
+  'of 3–4 and delivered systems with measurable cost and revenue impact at',
+  'enterprise scale — ~$280k/month in token spend removed, $4.2M in upsell',
+  'opportunity surfaced, $6.7M in at-risk revenue identified.',
   '',
   'Off the clock I contribute to kubernetes-sigs (Kueue, JobSet, LWS) and chase',
   'benchmark numbers that make schedulers and interconnects sweat.',
   '',
-  'B.Tech in Computer Science and Engineering, GITAM Deemed to be University (2017–2021).',
+  'B.Tech in Computer Science and Engineering, GITAM Deemed to be University.',
+  'US Citizen.',
 ];
 
 export const EXPERIENCE = [
   {
     key: 'google',
     aliases: ['quadrant'],
-    company: 'Google (via Quadrant Technologies)',
+    company: 'Google',
+    via: 'via Quadrant Technologies',
     location: 'Kirkland, WA',
     title: 'Senior Software Engineer — TPU/GPU Inference & HPC',
     dates: 'Apr 2026 – Present',
     summary:
-      'Accelerator performance engineering and mission-critical on-prem ML infrastructure for federal defense and high-frequency trading clients.',
+      'Mission-critical, on-premise ML infrastructure and accelerator performance engineering for federal defense and high-frequency trading clients, supporting distributed training and inference for massive-scale workloads on GPU and TPU clusters.',
     bullets: [
-      'Leading cloud-native ML infra on GKE for distributed training and inference of LLM workloads on GPUs and TPUs.',
-      'Owns GPU/TPU performance benchmarking — Ubench, Nsight Systems/Compute, DCGM, XLA profiling — and multi-node tuning (batch size, parallelism, NCCL params).',
-      'Built reproducible benchmarking pipelines for consistent performance validation across clusters.',
+      'Led design and operation of cloud-native ML infrastructure on Kubernetes (GKE) supporting distributed training and inference on GPUs and TPUs for LLM workloads.',
+      'Owned GPU and TPU performance benchmarking — profiling compute utilization, memory bandwidth, and accelerator interconnect communication using Ubench, Nsight Systems/Compute, DCGM, and XLA profiling tools.',
+      'Optimized multi-node accelerator training performance by tuning batch size, data/model parallelism, NCCL parameters (GPU), and accelerator resource allocation.',
+      'Built reproducible benchmarking pipelines using standardized recipes and runfiles, enabling consistent performance validation across GPU and TPU clusters.',
+      'Improved ML platform reliability through regression testing, log-based root cause analysis, and cross-team collaboration.',
     ],
   },
   {
     key: 'microsoft',
-    aliases: ['ag'],
-    company: 'Microsoft (via AG Consulting Partners)',
+    aliases: ['ag', 'cain'],
+    company: 'Microsoft',
+    via: 'via AG Consulting Partners',
     location: 'Redmond, WA',
-    title: 'Senior Software Engineer — AI/ML Engineering',
-    dates: 'Jun 2025 – Jan 2026',
+    title: 'Senior Software Engineer, AI/ML Engineering',
+    dates: 'Jun 2025 – Feb 2026',
     summary:
-      "Led a team of 4 on a fixed-term engagement within Microsoft's Commerce Platforms team, delivering agentic AI and fraud-prevention systems.",
+      'Led a team of 4 consultants on a 6-month fixed-term engagement within the Commerce Platforms team in Microsoft Azure, delivering agentic AI and fraud-prevention systems at enterprise scale.',
     bullets: [
-      'Built a scraping pipeline processing 9k+ forum posts/day, disabling 600+ fraudulent accounts (~$4,200 recovered each).',
-      'Co-led migration of an agentic chatbot (CAIN) from Copilot Studio to Semantic Kernel, improving CSAT from 52 to 74 (+42%).',
-      'Architected 16 agentic MCP tools automating fraud-analyst workflows, cutting review time by ~6 min/case across thousands of daily transactions.',
+      'Engineered a scraping pipeline on VMSS processing 9k+ forum posts/day to detect credit abuse, disabling 600+ accounts (~$4,200 recovered each). Normalized data into Azure SQL via Flask, deployed on Web Apps.',
+      'Co-led migration of CAIN (Commerce AI Nexus), an agentic chatbot, from Copilot Studio to Semantic Kernel orchestration — redesigning multi-step task and MCP reasoning loops and improving CSAT from 52 to 74 (+42%).',
+      'Architected 16 agentic MCP tools within CAIN, automating context-gathering (history, Risk API, AI-content and site checks) for fraud analysts, cutting review time by ~6 min/case across thousands of daily transactions.',
+      'Built a modular AI data pipeline with Azure AI Foundry, Cognitive Search, and modular RAG, enabling multi-agent OKR scenarios for ADO-based planning and scenario analysis.',
     ],
   },
   {
-    key: 'att',
-    aliases: ['apex', 'at&t'],
-    company: 'Apex Systems (client: AT&T)',
+    key: 'apex',
+    aliases: ['att', 'at&t', 'scriptsage'],
+    company: 'Apex Systems',
+    via: "client: AT&T — ScriptSage team",
     location: 'Bothell, WA',
     title: 'Senior Machine Learning Engineer',
-    dates: 'Mar 2024 – Dec 2025',
+    dates: 'Mar 2024 – Jun 2025',
     summary:
-      'Led a 3-engineer team driving cost-optimization and revenue-intelligence ML systems on AWS.',
+      "Drove cost-optimization and revenue-intelligence systems on AWS within AT&T's ScriptSage team, architecting ML systems that cut costs and increased upsell revenue while leading a 3-engineer team.",
     bullets: [
-      'Replaced GPT-4 with open-source models (LLaMA, DeBERTa, TinyBERT) on Databricks/Snowflake pipelines, cutting costs ~$280k/month.',
-      'Built a tiered upsell-detection pipeline surfacing $4.2M in potential sales opportunity.',
-      'Fine-tuned LLaMA 2 70B with QLoRA (92% memory reduction), deployed on SageMaker for 2.1x faster TTFT vs HF Transformers.',
-      'Led a cross-functional team building a docs automation platform (AWS Textract, Bedrock, SageMaker) saving 800+ hours/month across 7 internal teams.',
+      'Architected Databricks ML pipelines and workflows leveraging Snowflake, replacing GPT-4 with open-source models like LLaMA, DeBERTa, and TinyBERT — reducing costs by ~$280k monthly in token spend.',
+      'Spearheaded a tiered detection pipeline on AWS Databricks flagging high-intent upsell signals across 6 product categories from transcripts using transformer models with LLM escalation, surfacing $4.2M in potential sales opportunity.',
+      'Fine-tuned LLaMA 2 70B using PEFT with QLoRA, slashing memory usage by 92%. Deployed on SageMaker for 2.1x faster TTFT over HF Transformers. Integrated LangChain RouterChain for downstream consumption.',
+      'Led a cross-functional team of 3 engineers building a documentation automation platform leveraging AWS Textract, Bedrock, and SageMaker — used by 7 internal teams, slashing drafting time by 800+ hours/month.',
     ],
   },
   {
     key: 'duke',
     aliases: ['duke-energy', 'meridian'],
-    company: 'Duke Energy (via Meridian Staffing)',
+    company: 'Duke Energy',
+    via: 'via Meridian Staffing (contract)',
     location: 'Fort Lauderdale, FL',
     title: 'Senior Machine Learning Engineer',
     dates: 'Jul 2023 – Feb 2024',
-    summary: 'Enterprise conversational AI and GenAI initiatives on AWS.',
+    summary:
+      'Directed enterprise conversational AI and generative AI initiatives on AWS as part of a 6-month fixed engagement, spanning chatbot deployment, an email-generation initiative, and RAG-based NLP systems.',
     bullets: [
-      'Led enterprise chatbot development on AWS Lex + Terraform — 25+ intents, Node.js Lambda, CloudWatch monitoring.',
-      'Directed a GenAI email-generation initiative (Python, Streamlit, LangChain, AWS Bedrock/Claude/GPT) with prompt engineering to cut hallucinations.',
-      'Built a RAG-based GenAI NLP chatbot with vector embeddings, semantic chunking, and reranking.',
+      'Led development of an enterprise chatbot using AWS Lex with Terraform IaC. Deployed 25+ intents integrating Node.js Lambda functions and CloudWatch for monitoring.',
+      'Directed a generative AI email-generation initiative using Python, Streamlit, LangChain, and AWS Bedrock LLMs (Claude, GPT). Applied metadata tagging, few-shot learning, and prompt engineering to cut hallucinations.',
+      'Developed a GenAI NLP chatbot with AWS Bedrock, Lex, and RAG — vector embeddings, semantic chunking, and reranking.',
     ],
   },
   {
     key: 'breezeline',
     aliases: ['atlantic', 'cogeco'],
-    company: 'Breezeline (formerly Atlantic Broadband, a Cogeco company)',
+    company: 'Breezeline',
+    via: 'formerly Atlantic Broadband, a Cogeco company',
     location: 'Fort Lauderdale, FL',
     title: 'Machine Learning Engineer',
     dates: 'Nov 2021 – Jun 2023',
     summary:
-      'ML infrastructure, NLP pipelines, and churn prediction for a major broadband provider.',
+      "Delivered ML systems supporting customer retention and contact-center intelligence at a regional broadband provider — full lifecycle data pipelines, model training, and deployment on GCP. Prototyped the company's first LLM-based retrieval alongside NLP and churn models.",
     bullets: [
-      'Built ML infra with vector DBs (Weaviate, Pinecone, pgvector), cutting inference latency 65% and supporting 800k+ queries at <100ms p95.',
-      'Built an NLP topic-modeling pipeline on GCP (Vertex AI, GKE, BigQuery, CCAI) handling 4,000+ daily calls.',
-      'Built churn-prediction systems (fine-tuned BERT + GBDT) identifying 17,000+ at-risk accounts worth $6.7M annually.',
-      'Built a POC RAG system with PaLM-2 and Falcon LLMs on Vertex AI.',
+      'Engineered ML infrastructure with vector databases (Weaviate, Pinecone, pgvector) reducing inference latency by 65%, supporting 800k+ total queries at <100ms p95 response times.',
+      'Implemented an NLP topic-modeling pipeline leveraging GCP Vertex AI, GCS, BigQuery, and Google CCAI on GKE and App Engine with Terraform IaC, handling 4,000+ daily calls.',
+      'Created state-of-the-art churn prediction systems with fine-tuned BERT transformers and a GBDT from data in Snowflake/ADLS — identifying 17,000+ accounts worth $6.7M annually.',
+      'Built a POC RAG system with PaLM-2 and Falcon LLMs on GCP Vertex AI.',
     ],
   },
   {
     key: 'inception',
     aliases: [],
     company: 'Inception Research & Development Operations',
-    location: 'Hyderabad, India',
+    via: '',
+    location: 'Hyderabad, TG',
     title: 'Software Engineering Intern',
     dates: 'Jun 2020 – Mar 2021',
-    summary: 'Forecasting systems for logistics and mobility clients.',
+    summary: 'Forecasting systems for mobility and logistics clients.',
     bullets: [
-      'Optimized geospatial surge-pricing demand forecasts (SageMaker, Forecast, H3 clustering), cutting RMSE by 16%.',
-      'Built a time-series forecasting model (custom Java fork of FB Prophet) for a UAE logistics startup.',
+      'Optimized geospatial surge-pricing demand forecasts with AWS SageMaker, Forecast, and H3 grid clustering — cutting RMSE by 16% and enabling more accurate location-based pricing decisions.',
+      'Developed a time-series forecasting model using a custom Java fork of FB Prophet, increasing order fulfillment for a UAE logistics startup and reducing delivery delays by ~4 minutes on average. Handled pre-processing, transformation, training, and testing.',
     ],
   },
   {
     key: 'exponentia',
     aliases: ['datalabs'],
     company: 'Exponentia Datalabs',
-    location: 'Mumbai, India',
+    via: '',
+    location: 'Mumbai, MH',
     title: 'Machine Learning Intern',
     dates: 'May 2019 – Feb 2020',
     summary: 'Voice analytics and API engineering for BFSI clients.',
     bullets: [
-      'Built Alexa-integrated analytics serving 700+ BFSI executives via AWS Lambda/IAM/Lex.',
-      'Built RESTful APIs with FastAPI, cutting response time 22%.',
+      'Leveraged AWS Lambda, IAM, and Lex with Alexa to serve analytics to 700+ BFSI executives, improving decision-making by decreasing time to value.',
+      'Implemented workflows with Pandas, SQL, and Redshift. Composed RESTful APIs with FastAPI, reducing response time by 22%.',
     ],
   },
 ];
@@ -208,25 +228,34 @@ export const PROJECTS = [
   },
 ];
 
+// A group is either { category, items } or { category, groups: [{ name, items }] }.
 export const SKILLS = [
-  ['Languages', 'Python, C++, Java, R, SQL'],
-  [
-    'LLMs & GenAI',
-    'Prompt Engineering, RAG Architecture, Vector Databases, vLLM, NeMo, TensorRT-LLM, LLMOps, Agentic AI, LangChain, LangSmith, LangGraph, AutoGen, Semantic Kernel',
-  ],
-  [
-    'GPU/TPU Hardware',
-    'NVIDIA H100, Blackwell GPUs, Google TPU v5, TPU v6e (Trillium), TPU7x (Ironwood)',
-  ],
-  [
-    'Cloud & AI Platforms',
-    'AWS (SageMaker, Bedrock, Textract, OpenSearch, Lex, Lambda, S3, EKS, RDS), Azure (AI Foundry, OpenAI, Document Intelligence, AI Search, Cosmos DB, ML Studio, AKS, VMSS), GCP (Vertex AI, GKE, BigQuery, Pub/Sub, CCAI, DialogFlow), Databricks (Feature Store, MLflow, Unity Catalog, Genie)',
-  ],
-  [
-    'ML/DL',
-    'TensorFlow, PyTorch, JAX, Keras, Transformers, BERT, LightGBM, XGBoost, Scikit-learn, PySpark',
-  ],
-  ['Databases', 'MySQL, PostgreSQL, Snowflake, Azure SQL'],
+  { category: 'Programming Languages', items: 'Python, C++, Java, R, SQL' },
+  {
+    category: 'LLMs & Generative AI',
+    items:
+      'Prompt Engineering, RAG Architecture, Vector Databases, vLLM, NeMo, TensorRT-LLM, LLMOps, Agentic AI, LangChain, LangSmith, LangGraph, AutoGen, Semantic Kernel',
+  },
+  {
+    category: 'GPU / TPU Hardware',
+    items:
+      'NVIDIA H100, Blackwell GPUs, Google TPU v5, TPU v6e (Trillium), TPU7x (Ironwood)',
+  },
+  {
+    category: 'Cloud & AI Platforms',
+    groups: [
+      { name: 'AWS', items: 'SageMaker, Bedrock, Textract, OpenSearch, Lex, Lambda, S3, EKS, RDS' },
+      { name: 'Azure', items: 'AI Foundry, OpenAI, Document Intelligence, AI Search, Cosmos DB, ML Studio, Blob Storage, Web Apps, VMSS, AKS, App Service, SQL' },
+      { name: 'GCP', items: 'Vertex AI, GKE, Artifact Registry, Compute Engine, BigQuery, Pub/Sub, CCAI, App Engine, GCS, DialogFlow' },
+      { name: 'Databricks', items: 'Azure Databricks, AWS Databricks, Feature Store, MLflow, Unity Catalog, Genie' },
+    ],
+  },
+  {
+    category: 'ML, Deep Learning & Data Science',
+    items:
+      'NLP, TensorFlow, Transformers, BERT, Neural Networks, PyTorch, JAX, Keras, LightGBM, XGBoost, NumPy, Pandas, PySpark, Matplotlib, Scikit-learn',
+  },
+  { category: 'Databases', items: 'MySQL, PostgreSQL, Snowflake, Azure SQL' },
 ];
 
 export const CERTS = {
@@ -237,13 +266,14 @@ export const CERTS = {
     'Databricks Academy Accreditation – Gen AI Fundamentals',
   ],
   awards: [
-    'Top 500 of 120,000+ in HackWithInfy (Infosys, 99.5th percentile), 2020',
-    '#3 regionally / #279 nationally in Google Hash Code, 2020',
+    "Top 500 of 120,000+ competitors (99.5th percentile) in HackWithInfy, Infosys' national-level coding contest (2020)",
+    '#3 at hub level and #279 nationally in Google Hash Code (2020)',
   ],
 };
 
 export const EDUCATION = {
   school: 'GITAM Deemed to be University',
-  degree: 'B.Tech, Computer Science and Engineering',
+  location: 'Visakhapatnam, AP',
+  degree: 'Bachelor of Technology, Computer Science and Engineering',
   years: '2017 – 2021',
 };

@@ -11,11 +11,12 @@ certs, contact). Edit that file only for content updates.
 
 ## One-time setup
 
-- **Resume** — drop the PDF at `assets/Viswalahiri_Hejeebu_Resume.pdf`
-  (exact name). The `resume` command finds it automatically.
-- **Booking** — create a Calendly account, add an event type (e.g.
-  "Intro chat — 30 min"), connect Google Calendar, then paste the event link
-  into `CALENDLY_URL` in `js/data.js`. Until then, `book` falls back to email.
+- **Resume** — *(pending)* drop the PDF at
+  `assets/Viswalahiri_Hejeebu_Resume.pdf` (exact name) and push. The `resume`
+  command detects it automatically; until then it shows an email fallback.
+- **Booking** — done. `CALENDLY_URL` in `js/data.js` points at
+  `calendly.com/lahiri-coffee-chat/30min` and opens in a modal over the
+  terminal.
 
 ## Security note
 

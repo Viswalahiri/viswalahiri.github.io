@@ -39,12 +39,97 @@ body {
   );
 }
 
+/* ---- persistent top bar: key links always visible ---- */
+#topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.7rem 1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+/* full-bleed backdrop so content scrolling underneath stays hidden */
+#topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0 -100vw;
+  z-index: -1;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+.brand-name {
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 0 10px var(--accent-soft);
+  white-space: nowrap;
+}
+.brand-role {
+  color: var(--dim);
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+.brand:hover .brand-name { text-decoration: underline dotted; text-underline-offset: 3px; }
+
+.topbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+.topbar-links a,
+.topbar-links button {
+  font-family: inherit;
+  font-size: 0.88em;
+  color: var(--fg);
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 0.32em 0.7em;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.topbar-links a:hover,
+.topbar-links button:hover,
+.topbar-links a:focus-visible,
+.topbar-links button:focus-visible {
+  color: var(--accent);
+  border-color: var(--border);
+  outline: none;
+}
+.topbar-links .cta {
+  color: var(--accent);
+  border-color: var(--accent-soft);
+}
+.topbar-links .cta:hover,
+.topbar-links .cta:focus-visible {
+  background: rgba(46, 230, 107, 0.12);
+  border-color: var(--accent);
+}
+
 /* ---- terminal layout ---- */
 #terminal {
   max-width: 960px;
   margin: 0 auto;
   padding: 1.25rem 1rem 3rem;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
   cursor: text;
 }
 
@@ -172,9 +257,16 @@ pre {
 .pr-open { color: #3fb950; }
 
 /* experience list rows */
-.xp-row { display: block; }
-.xp-idx { color: var(--accent); }
+.xp-row { display: block; margin-bottom: 0.35rem; }
+.xp-sub { padding-left: 4ch; display: inline-block; }
 .xp-dates { color: var(--dim); }
+
+/* skills: aligned cloud sub-providers */
+.skill-row { white-space: pre-wrap; }
+.skill-sub { color: var(--fg); font-weight: 700; }
+
+/* contact key column */
+.contact-key { color: var(--dim); }
 
 /* ---- noscript fallback ---- */
 .noscript-fallback {
@@ -184,10 +276,31 @@ pre {
 }
 
 /* ---- responsive ---- */
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   body { font-size: 13.5px; }
   #terminal { padding: 0.9rem 0.7rem 3rem; }
   .banner-art { font-size: 0.78em; }
+
+  #topbar {
+    padding: 0.55rem 0.7rem;
+    gap: 0.4rem;
+  }
+  .brand-role { display: none; }
+  .topbar-links {
+    gap: 0.15rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .topbar-links a,
+  .topbar-links button {
+    font-size: 0.82em;
+    padding: 0.3em 0.45em;
+  }
+  .xp-sub { padding-left: 4ch; }
+}
+
+@media (max-width: 380px) {
+  .topbar-links .cta { padding: 0.3em 0.5em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
