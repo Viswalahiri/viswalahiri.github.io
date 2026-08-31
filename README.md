@@ -25,10 +25,26 @@ employer. While it is `true`, the site shows an unnamed AI lab, marked
 `[confidential]`, across the experience command, `about`, the virtual
 filesystem path, tab completion, and the resume link.
 
-Because this repo is public, the real employer name is **not stored here** —
-a boolean alone would hide nothing from anyone reading the source. The reveal
-values live in `STEALTH.local.md`, which is gitignored; see that file for the
-exact steps to switch modes.
+**Switching modes:** set `STEALTH_MODE = false` and push. That is the only
+edit required, and it can be made from anywhere, including GitHub's web
+editor. Set it back to `true` to hide the employer again.
+
+Because this repo is public, the identity used when revealing is stored
+base64-encoded rather than plaintext. That is obfuscation, not encryption:
+it keeps the name out of search engines, GitHub code search, scrapers, and a
+casual read of the source, but it will not stop anyone who deliberately
+decodes it. To regenerate the blob (e.g. after a job change):
+
+```sh
+python3 -c "import base64,json;print(base64.b64encode(json.dumps({'key':'acme','aliases':['partner'],'company':'Acme','via':'via Partner Co','location':'City, ST'},separators=(',',':')).encode()).decode())"
+```
+
+Paste the result into `CURRENT_ROLE_ENCODED` in `js/data.js`. For zero trace
+instead, set that constant to an empty string and type the real values in only
+when you reveal — the site stays stealthy whenever no company name resolves.
+
+Two things the flag cannot reach: the `<noscript>` block in `index.html`
+(static markup, deliberately names no current employer) and git history.
 
 While stealth is on, the `resume` command serves
 `assets/Viswalahiri_Hejeebu_Resume_Confidential.pdf` (a redacted PDF), so a

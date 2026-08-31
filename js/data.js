@@ -6,25 +6,37 @@
 // the site: experience list and detail, `about`, the virtual filesystem path,
 // tab completion, and the resume link.
 //
-// This repository is PUBLIC, so the real employer's name is deliberately not
-// stored in it — a boolean alone would hide nothing from anyone reading the
-// source. To reveal:
-//   1. paste the real values into CURRENT_ROLE_REAL below
-//      (the snippet lives in STEALTH.local.md, which is gitignored), and
-//   2. set STEALTH_MODE = false.
-// With STEALTH_MODE = false but the values left blank, the site stays stealthy
-// rather than rendering an empty employer.
+// Flip STEALTH_MODE to false to reveal the real employer; that is the only
+// edit needed, and it can be made from anywhere (including GitHub's web
+// editor).
+//
+// This repository is PUBLIC, so the real identity below is base64-encoded
+// rather than plaintext. To be clear about what that is worth: encoding is
+// obfuscation, NOT encryption. It keeps the name out of search engines, code
+// search, scrapers, and a casual read of the source — it will not stop anyone
+// who decodes it deliberately. If you ever want zero trace, replace the blob
+// with an empty string and type the values in when you reveal; the site stays
+// stealthy whenever it cannot resolve a company name.
 export const STEALTH_MODE = true;
 
-const CURRENT_ROLE_REAL = {
-  key: '',
-  aliases: [],
-  company: '',
-  via: '',
-  location: '',
-};
+// {"key":…,"aliases":[…],"company":…,"via":…,"location":…} — see README to regenerate.
+const CURRENT_ROLE_ENCODED =
+  'eyJrZXkiOiJnb29nbGUiLCJhbGlhc2VzIjpbInF1YWRyYW50Il0sImNvbXBhbnkiOiJHb29nbGUiLCJ2aWEiOiJ2aWEgUXVhZHJhbnQgVGVjaG5vbG9naWVzIiwibG9jYXRpb24iOiJLaXJrbGFuZCwgV0EifQ==';
 
-export const REVEALED = !STEALTH_MODE && Boolean(CURRENT_ROLE_REAL.company);
+// Only decoded when the site is actually revealing — while stealth is on the
+// real values are never materialized.
+function decodeRole(blob) {
+  try {
+    const bytes = Uint8Array.from(atob(blob), (c) => c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    return null;
+  }
+}
+
+const CURRENT_ROLE_REAL = STEALTH_MODE ? null : decodeRole(CURRENT_ROLE_ENCODED);
+
+export const REVEALED = Boolean(CURRENT_ROLE_REAL?.company);
 
 const EMPLOYER_LABEL = REVEALED ? CURRENT_ROLE_REAL.company : 'a stealth AI lab';
 
