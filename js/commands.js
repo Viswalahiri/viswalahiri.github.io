@@ -27,6 +27,16 @@ export function printBanner(term) {
   term.print('GPU &amp; TPU clusters · distributed training · high-throughput inference', 'dim');
   term.spacer();
   term.print(
+    `<span class="accent">›</span> 5+ years shipping large-scale ML systems · led teams of 3–4`
+  );
+  term.print(
+    `<span class="accent">›</span> ~$280k/mo inference cost removed · $4.2M pipeline surfaced · $6.7M at-risk revenue identified`
+  );
+  term.print(
+    `<span class="accent">›</span> kubernetes-sigs contributor — ${term.cmdToken('projects', 'Kueue, JobSet, LWS')}`
+  );
+  term.spacer();
+  term.print(
     `<span class="chips">${CHIP_COMMANDS.map(
       (c) => `<button class="chip" data-cmd="${c}">${c}</button>`
     ).join('')}</span>`
@@ -60,9 +70,11 @@ function printRoleList(term) {
     );
   });
   term.spacer();
+  // Example uses the resolved current role's key so it is correct in both
+  // stealth and revealed modes — never hardcode an employer name here.
   term.print(
     `<span class="dim">Drill in with</span> ${term.cmdToken('experience 1')} <span class="dim">or</span> ` +
-    `${term.cmdToken('experience google')}<span class="dim">, etc.</span>`
+    `${term.cmdToken(`experience ${EXPERIENCE[0].key}`)}<span class="dim">, etc.</span>`
   );
 }
 
@@ -120,9 +132,12 @@ function prLine(project, pr, kind) {
 }
 
 function statsLine(term, project, r) {
+  // A zero count renders dim rather than in its status color, so an empty
+  // bucket doesn't read as a red flag next to real numbers.
+  const cls = (n, on) => (n ? on : 'dim');
   return (
-    `<span class="pr-merged">✔ ${r.merged.length} merged</span> <span class="dim">·</span> ` +
-    `<span class="pr-open">● ${r.open.length} in progress</span> ` +
+    `<span class="${cls(r.merged.length, 'pr-merged')}">✔ ${r.merged.length} merged</span> <span class="dim">·</span> ` +
+    `<span class="${cls(r.open.length, 'pr-open')}">● ${r.open.length} in progress</span> ` +
     `&nbsp;<span class="dim">→</span> ${term.cmdToken(`projects ${project.key}`)}`
   );
 }
