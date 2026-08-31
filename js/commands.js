@@ -6,13 +6,14 @@ import {
 import { fetchContributions, prUrl, repoUrl } from './github.js';
 import { buildFS, VFS } from './fs.js';
 
+// Block-drawing glyphs read far more crisply than slash-based figlet art.
 const BANNER_ART = String.raw`
- __      _______ ______
- \ \    / /_   _|___  /
-  \ \  / /  | |    / /
-   \ \/ /   | |   / /
-    \  /   _| |_ / /__
-     \/   |_____/_____|
+██╗   ██╗██╗███████╗
+██║   ██║██║╚══███╔╝
+██║   ██║██║  ███╔╝
+╚██╗ ██╔╝██║ ███╔╝
+ ╚████╔╝ ██║███████╗
+  ╚═══╝  ╚═╝╚══════╝
 `;
 
 // Contact / resume / book live in the persistent top bar, so the chips stay
@@ -20,7 +21,14 @@ const BANNER_ART = String.raw`
 const CHIP_COMMANDS = ['about', 'experience', 'projects', 'skills', 'certs', 'contact'];
 
 export function printBanner(term) {
-  term.print(`<pre class="banner-art">${escapeHtml(BANNER_ART.replace(/^\n/, ''))}</pre>`);
+  // Each row is its own element so CSS can cascade them in; the shimmer and
+  // the reveal both no-op under prefers-reduced-motion.
+  const rows = BANNER_ART.replace(/^\n/, '').replace(/\n$/, '').split('\n');
+  term.print(
+    `<pre class="banner-art">${rows
+      .map((r) => `<span class="banner-line">${escapeHtml(r)}</span>`)
+      .join('\n')}</pre>`
+  );
   term.print(
     `<span class="bold">${escapeHtml(CONTACT.name)}</span> <span class="dim">— ${escapeHtml(CONTACT.title)} · ${escapeHtml(CONTACT.location)}</span>`
   );

@@ -196,9 +196,55 @@ a:hover { color: var(--accent); }
 
 .banner-art {
   color: var(--accent);
-  text-shadow: 0 0 12px var(--accent-soft);
-  line-height: 1.2;
-  margin: 0 0 0.25rem;
+  line-height: 1.05;
+  margin: 0 0 0.4rem;
+  filter: drop-shadow(0 0 10px var(--accent-soft));
+}
+
+/* A slow teal-through-green sweep across the letterforms. Guarded so the
+   text never renders transparent if background-clip:text is unsupported. */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .banner-art {
+    background: linear-gradient(
+      100deg,
+      var(--accent) 0%,
+      var(--accent) 35%,
+      #7ff0d4 50%,
+      var(--accent) 65%,
+      var(--accent) 100%
+    );
+    background-size: 250% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 7s linear infinite;
+  }
+}
+
+@keyframes shimmer {
+  from { background-position: 150% center; }
+  to { background-position: -100% center; }
+}
+
+/* Rows cascade in on load rather than appearing all at once. The hidden
+   start state lives only inside the animation (fill-mode: both), never as a
+   base style — so if the animation never runs, the logo is simply visible
+   rather than stuck invisible. */
+.banner-line { display: inline-block; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .banner-line { animation: bannerIn 0.36s ease-out both; }
+  .banner-line:nth-child(1) { animation-delay: 0ms; }
+  .banner-line:nth-child(2) { animation-delay: 55ms; }
+  .banner-line:nth-child(3) { animation-delay: 110ms; }
+  .banner-line:nth-child(4) { animation-delay: 165ms; }
+  .banner-line:nth-child(5) { animation-delay: 220ms; }
+  .banner-line:nth-child(6) { animation-delay: 275ms; }
+}
+
+@keyframes bannerIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to { opacity: 1; transform: none; }
 }
 
 pre {
@@ -308,4 +354,5 @@ pre {
 
 @media (prefers-reduced-motion: reduce) {
   #caret { animation: none; }
+  .banner-art { animation: none; }
 }
