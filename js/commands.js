@@ -73,6 +73,11 @@ function printRole(term, role) {
     `<span class="section-title">${escapeHtml(role.company)}</span>${via} <span class="dim">· ${escapeHtml(role.location)}</span>`
   );
   term.print(`${escapeHtml(role.title)} · <span class="xp-dates">${escapeHtml(role.dates)}</span>`);
+  if (role.confidential) {
+    term.print(
+      '<span class="confidential">[confidential]</span> <span class="dim">employer name withheld while this engagement is active — happy to share directly.</span>'
+    );
+  }
   term.spacer();
   term.print(escapeHtml(role.summary));
   term.spacer();

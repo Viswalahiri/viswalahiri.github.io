@@ -1,9 +1,44 @@
 // All site content and configuration. Edit this file to update the site —
 // no other code changes needed for content updates.
 
+// ─── Stealth mode ──────────────────────────────────────────────────────────
+// When true, the current role is presented as an unnamed AI lab everywhere on
+// the site: experience list and detail, `about`, the virtual filesystem path,
+// tab completion, and the resume link.
+//
+// This repository is PUBLIC, so the real employer's name is deliberately not
+// stored in it — a boolean alone would hide nothing from anyone reading the
+// source. To reveal:
+//   1. paste the real values into CURRENT_ROLE_REAL below
+//      (the snippet lives in STEALTH.local.md, which is gitignored), and
+//   2. set STEALTH_MODE = false.
+// With STEALTH_MODE = false but the values left blank, the site stays stealthy
+// rather than rendering an empty employer.
+export const STEALTH_MODE = true;
+
+const CURRENT_ROLE_REAL = {
+  key: '',
+  aliases: [],
+  company: '',
+  via: '',
+  location: '',
+};
+
+export const REVEALED = !STEALTH_MODE && Boolean(CURRENT_ROLE_REAL.company);
+
+const EMPLOYER_LABEL = REVEALED ? CURRENT_ROLE_REAL.company : 'a stealth AI lab';
+
+// Stealth mode expects a redacted PDF, so a resume that still names the
+// employer is never served while the site is hiding it. If the file is
+// missing, the `resume` command falls back to email.
+const RESUME_FILES = {
+  real: 'assets/Viswalahiri_Hejeebu_Resume.pdf',
+  stealth: 'assets/Viswalahiri_Hejeebu_Resume_Confidential.pdf',
+};
+
 export const CONFIG = {
   CALENDLY_URL: 'https://calendly.com/lahiri-coffee-chat/30min',
-  RESUME_PATH: 'assets/Viswalahiri_Hejeebu_Resume.pdf',
+  RESUME_PATH: REVEALED ? RESUME_FILES.real : RESUME_FILES.stealth,
 };
 
 export const CONTACT = {
@@ -27,8 +62,9 @@ export const ABOUT = [
   'applications.',
   '',
   'Right now I drive performance engineering for mission-critical on-premise',
-  'workloads at Google — accelerator benchmarking and cloud-native ML infra on',
-  'GKE for federal defense and high-frequency trading clients.',
+  `workloads at ${EMPLOYER_LABEL} — accelerator benchmarking and`,
+  'cloud-native ML infra on GKE for federal defense and high-frequency',
+  'trading clients.',
   '',
   'Before that: agentic AI systems, RAG, deep learning, and LLM fine-tuning',
   'shipped across AWS, Azure, GCP, and Databricks. I have led engineering teams',
@@ -43,13 +79,16 @@ export const ABOUT = [
   'US Citizen.',
 ];
 
-export const EXPERIENCE = [
+const ROLES = [
   {
-    key: 'google',
-    aliases: ['quadrant'],
-    company: 'Google',
-    via: 'via Quadrant Technologies',
-    location: 'Kirkland, WA',
+    // Current role — stealth identity by default; CURRENT_ROLE_REAL overrides
+    // these fields when the site is revealed.
+    key: 'current',
+    aliases: ['stealth', 'lab'],
+    company: 'Stealth AI Lab',
+    via: 'company name confidential',
+    location: 'Greater Seattle Area',
+    confidential: true,
     title: 'Senior Software Engineer — TPU/GPU Inference & HPC',
     dates: 'Apr 2026 – Present',
     summary:
@@ -158,6 +197,16 @@ export const EXPERIENCE = [
     ],
   },
 ];
+
+// The current role (index 0) carries stealth values by default. When revealed,
+// the real identity is merged over them and the confidential flag is dropped;
+// everything downstream — the experience command, the virtual filesystem, tab
+// completion — reads this resolved list, so one flag switches the whole site.
+export const EXPERIENCE = ROLES.map((role, i) =>
+  i === 0 && REVEALED
+    ? { ...role, ...CURRENT_ROLE_REAL, confidential: false }
+    : role
+);
 
 // GitHub username used for the live contribution lookups in js/github.js.
 export const GITHUB_USER = 'Viswalahiri';

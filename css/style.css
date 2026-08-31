@@ -268,6 +268,9 @@ pre {
 /* contact key column */
 .contact-key { color: var(--dim); }
 
+/* stealth-mode marker on the current role */
+.confidential { color: #d9a441; }
+
 /* ---- noscript fallback ---- */
 .noscript-fallback {
   max-width: 720px;

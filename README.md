@@ -18,6 +18,24 @@ certs, contact). Edit that file only for content updates.
   `calendly.com/lahiri-coffee-chat/30min` and opens in a modal over the
   terminal.
 
+## Stealth mode
+
+`STEALTH_MODE` in `js/data.js` controls whether the current role names its
+employer. While it is `true`, the site shows an unnamed AI lab, marked
+`[confidential]`, across the experience command, `about`, the virtual
+filesystem path, tab completion, and the resume link.
+
+Because this repo is public, the real employer name is **not stored here** —
+a boolean alone would hide nothing from anyone reading the source. The reveal
+values live in `STEALTH.local.md`, which is gitignored; see that file for the
+exact steps to switch modes.
+
+While stealth is on, the `resume` command serves
+`assets/Viswalahiri_Hejeebu_Resume_Confidential.pdf` (a redacted PDF), so a
+resume naming the employer is never served by a site that is hiding it. If
+that file is absent, `resume` falls back to email rather than exposing the
+real PDF.
+
 ## Security note
 
 `index.html` ships a Content-Security-Policy meta tag. If you ever edit the
