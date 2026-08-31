@@ -194,57 +194,49 @@ a:hover { color: var(--accent); }
 .error { color: var(--error); }
 .bold { font-weight: 700; }
 
+/* The logo is painted with a real color and a text-shadow glow only.
+   Deliberately NOT background-clip:text — a parent's text-clipped gradient
+   is not painted through child row elements in WebKit, which rendered the
+   whole logo invisible on iOS Safari. Animation here only ever moves color,
+   opacity and transform, so the letterforms cannot vanish. */
 .banner-art {
   color: var(--accent);
   line-height: 1.05;
   margin: 0 0 0.4rem;
-  filter: drop-shadow(0 0 10px var(--accent-soft));
+  text-shadow: 0 0 12px var(--accent-soft);
 }
 
-/* A slow teal-through-green sweep across the letterforms. Guarded so the
-   text never renders transparent if background-clip:text is unsupported. */
-@supports (-webkit-background-clip: text) or (background-clip: text) {
-  .banner-art {
-    background: linear-gradient(
-      100deg,
-      var(--accent) 0%,
-      var(--accent) 35%,
-      #7ff0d4 50%,
-      var(--accent) 65%,
-      var(--accent) 100%
-    );
-    background-size: 250% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer 7s linear infinite;
-  }
-}
-
-@keyframes shimmer {
-  from { background-position: 150% center; }
-  to { background-position: -100% center; }
-}
-
-/* Rows cascade in on load rather than appearing all at once. The hidden
-   start state lives only inside the animation (fill-mode: both), never as a
-   base style — so if the animation never runs, the logo is simply visible
-   rather than stuck invisible. */
-.banner-line { display: inline-block; }
+/* One row per line; joined without newlines in js/commands.js so these block
+   elements are the only thing creating line breaks. */
+.banner-line { display: block; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .banner-line { animation: bannerIn 0.36s ease-out both; }
-  .banner-line:nth-child(1) { animation-delay: 0ms; }
-  .banner-line:nth-child(2) { animation-delay: 55ms; }
-  .banner-line:nth-child(3) { animation-delay: 110ms; }
-  .banner-line:nth-child(4) { animation-delay: 165ms; }
-  .banner-line:nth-child(5) { animation-delay: 220ms; }
-  .banner-line:nth-child(6) { animation-delay: 275ms; }
+  /* Rows cascade in, then a teal wave drifts down the letterforms. */
+  .banner-line {
+    animation:
+      bannerIn 0.4s ease-out both,
+      bannerWave 4.5s ease-in-out infinite;
+  }
+  .banner-line:nth-child(1) { animation-delay: 0ms, 0ms; }
+  .banner-line:nth-child(2) { animation-delay: 55ms, 140ms; }
+  .banner-line:nth-child(3) { animation-delay: 110ms, 280ms; }
+  .banner-line:nth-child(4) { animation-delay: 165ms, 420ms; }
+  .banner-line:nth-child(5) { animation-delay: 220ms, 560ms; }
+  .banner-line:nth-child(6) { animation-delay: 275ms, 700ms; }
 }
 
+/* Slide only — never opacity. An opacity-0 start state means the logo is
+   invisible for as long as the animation has not run, which is exactly how
+   it broke before. Animating transform alone keeps every row painted at
+   every instant, whatever the browser does with the animation. */
 @keyframes bannerIn {
-  from { opacity: 0; transform: translateX(-6px); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateX(-10px); }
+  to { transform: none; }
+}
+
+@keyframes bannerWave {
+  0%, 100% { color: var(--accent); }
+  50% { color: #7ff0d4; }
 }
 
 pre {

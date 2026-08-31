@@ -27,7 +27,7 @@ export function printBanner(term) {
   term.print(
     `<pre class="banner-art">${rows
       .map((r) => `<span class="banner-line">${escapeHtml(r)}</span>`)
-      .join('\n')}</pre>`
+      .join('')}</pre>`
   );
   term.print(
     `<span class="bold">${escapeHtml(CONTACT.name)}</span> <span class="dim">— ${escapeHtml(CONTACT.title)} · ${escapeHtml(CONTACT.location)}</span>`
